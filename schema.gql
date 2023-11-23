@@ -1,0 +1,98 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type PostEntity {
+  id: String!
+  title: String!
+  content: String!
+  deleted_at: DateTime
+  created_at: DateTime
+  updated_at: DateTime
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type DailyMetadata {
+  information: String!
+  symbol: String!
+  lastRefreshed: String!
+  outputSize: String!
+  timeZone: String!
+}
+
+type IntraDayMetadata {
+  information: String!
+  symbol: String!
+  lastRefreshed: String!
+  outputSize: String!
+  timeZone: String!
+  interval: String!
+}
+
+type SearchResponse {
+  symbol: String!
+  name: String!
+  type: String!
+  region: String!
+  timezone: String!
+  currency: String!
+  matchScore: String!
+  marketOpen: String!
+  marketClose: String!
+}
+
+type QuoteResponse {
+  symbol: String!
+  high: String!
+  low: String!
+  volume: String!
+  open: String!
+  price: String!
+  latestTradingDay: String!
+  previousClose: String!
+  change: String!
+  changePercent: String!
+}
+
+type Query {
+  post(id: String!): PostEntity!
+  posts: [PostEntity!]!
+  getTimeSeriesData(functionCode: String!, symbols: String!, apikey: String!, interval: String!, adjusted: Boolean!, extended_hours: Boolean!, month: String!, outputsize: String!, datatype: String!): [TimeSeriesDataResult!]!
+}
+
+union TimeSeriesDataResult = TimeSeriesIntraDayResponse | TimeSeriesDailyResponse | TimeSeriesSearchResponse | TimeSeriesQuoteResponse | ErrorType
+
+type TimeSeriesIntraDayResponse {
+  metadata: IntraDayMetadata!
+  timeSeries: JSON!
+}
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+
+type TimeSeriesDailyResponse {
+  metadata: DailyMetadata!
+  timeSeries: JSON!
+}
+
+type TimeSeriesSearchResponse {
+  bestMatches: [SearchResponse!]!
+}
+
+type TimeSeriesQuoteResponse {
+  quote: QuoteResponse!
+}
+
+type ErrorType {
+  message: String!
+}
+
+type Mutation {
+  createPost(title: String!, content: String!): PostEntity!
+}
